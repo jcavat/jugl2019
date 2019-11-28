@@ -1,14 +1,25 @@
-interface Animal {}
-class Cat implements Animal {}
-class Bird implements Animal {}
+interface Animal {
+    String hasBeenEatenBy(Predator p);
+}
+class Cat implements Animal {
+    public String hasBeenEatenBy(Predator p) {
+        return p.eat(this);
+    }
+}
+class Bird implements Animal {
+    public String hasBeenEatenBy(Predator p) {
+        return p.eat(this);
+    }
+}
 
 interface Predator {
-    default String eat(Animal animal) { return "Predator eat an animal"; }
-    default String eat(Cat cat) { return "Predator eat a cat"; }
-    default String eat(Bird bird) { return "Predator eat a bird"; }
+    default String eat(Animal animal) { 
+        return animal.hasBeenEatenBy(this);
+    }
+    String eat(Cat cat);
+    String eat(Bird bird);
 }
 class Lion implements Predator {
-    public String eat(Animal animal) { return "Lion eat an animal"; }
     public String eat(Cat cat) { return "Lion eat a cat"; }
     public String eat(Bird bird) { return "Lion eat a bird"; }
 }
@@ -18,7 +29,7 @@ public class PredatorApp {
 
     public static void main(String[] args) {
         Predator p = new Lion();
-        Cat a = new Cat();
+        Animal a = new Cat();
         log( p.eat(a) );
     }
 }
